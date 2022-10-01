@@ -19,10 +19,10 @@ const getWeatherDataFromApi = async() => {
     
     let response = {};
     try{
-        response = await fetch(url).then(response => response.json());
+        response = await axios(url);
         console.log(response);
         
-        const { main, sys, weather, name } = response;
+        const { main, sys, weather, name } = response.data;
         const iconUrl = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
         const iconUrlAWS = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${weather[0].icon}.svg`;
     
@@ -54,7 +54,42 @@ const getWeatherDataFromApi = async() => {
                                 <figcaption>${weather[0].description}</figcaption>
                             </figure>`;
         list.prepend(createdLi);                    
-        form.reset(); 
+        form.reset();
+        
+        //Capturing (dışardan içeri)
+        createdLi.addEventListener('click',(e)=>{//li de clickleme olayı olsun
+
+            if(e.target.tagName == "IMG"){//eğer şart sağlanıyorsa şart sağlansın e.target(yakaladığım yer) tagname(h2,div,img vs) img ise aşağıdaki olay gerçekleşsin 
+                e.target.src = (e.target.src ==iconUrl) ? iconUrlAWS : iconUrl;// e.target(yakaladığım yer) iconUrl ise yani sağlanıyorsa iconUrlAws den gelsin değilse iconUrl den gelsin
+            }
+        });
+
+     //Bubbling
+        // createdLi.addEventListener("click", (e)=>{
+        //     alert(`LI element is clicked!!`);
+        //     window.location.href = "https://clarusway.com";
+        // });
+        // createdLi.querySelector("figure").addEventListener("click", (e)=>{ // li lerden figür olanı seç ordaki figüre clickleme olduğunda ekrana uyarı ver sonra clarusway sayfasına yönlendir alertlere her tıkladığımda bi üst satıra çıkacak en son claruswayin sayfasına yönlendircek
+        //     alert(`FIGURE element is clicked!!`); 
+        //     //STOP BUBBLING
+        //     //e.stopPropagation();
+        //     // window.location.href = "https://clarusway.com";
+        // });
+        // createdLi.querySelector("img").addEventListener("click", (e)=>{
+        //     alert(`IMG element is clicked!!`);
+        //     // window.location.href = "https://clarusway.com";
+        // });
+
+
+
+
+
+
+
+
+
+
+
      
 } catch(error){
     console.log(error);
