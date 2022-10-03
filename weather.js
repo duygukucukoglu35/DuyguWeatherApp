@@ -41,6 +41,7 @@ const getWeatherDataFromApi = async() => {
         }    
         }
        
+        
     
         const createdLi = document.createElement("li");
         createdLi.classList.add("city");
